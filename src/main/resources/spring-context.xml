@@ -1,9 +1,11 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <beans xmlns="http://www.springframework.org/schema/beans"
        xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xmlns:util="http://www.springframework.org/schema/util"
        xsi:schemaLocation="http://www.springframework.org/schema/beans
-         http://www.springframework.org/schema/beans/spring-beans.xsd">
-    <bean class="com.uprr.app.tng.spring.random.RandomNumberGenerator"/>
+         http://www.springframework.org/schema/beans/spring-beans.xsd
+         http://www.springframework.org/schema/util
+         http://www.springframework.org/schema/util/spring-util.xsd">
     <bean class="org.springframework.beans.factory.config.PropertyPlaceholderConfigurer">
         <property name="locations">
             <list>
@@ -11,7 +13,30 @@
             </list>
         </property>
     </bean>
-    <bean id="defaultMapSize" class="java.lang.Integer">
-        <constructor-arg value="${default-map-size}"/>
+
+    <bean id="randomNumberGenerator" class="com.uprr.app.tng.spring.random.RandomNumberGenerator"/>
+    <bean id="pokemonDao" class="com.uprr.app.tng.spring.dao.PokemonDao"/>
+    <bean id="pokemonLocationDao" class="com.uprr.app.tng.spring.dao.PokemonLocationDao"/>
+    <bean id="pokemonFactory" class="com.uprr.app.tng.spring.factory.PokemonFactory">
+        <constructor-arg name="randomNumberGenerator" ref="randomNumberGenerator"/>
+    </bean>
+    <bean id="gameBoard" class="com.uprr.app.tng.spring.GameBoard">
+        <constructor-arg name="pokemonDao" ref="pokemonDao"/>
+        <constructor-arg name="pokemonLocationDao" ref="pokemonLocationDao"/>
+        <constructor-arg name="pokemonFactory" ref="pokemonFactory"/>
+        <constructor-arg name="randomNumberGenerator" ref="randomNumberGenerator"/>
+        <constructor-arg name="size" value="${default-map-size}"/>
+    </bean>
+    <bean id="scanner" class="java.util.Scanner">
+        <constructor-arg>
+            <util:constant static-field="java.lang.System.in"/>
+        </constructor-arg>
+    </bean>
+    <bean class="com.uprr.app.tng.spring.hmi.HumanInterface">
+        <constructor-arg name="scanner" ref="scanner"/>
+        <constructor-arg name="printer">
+            <util:constant static-field="java.lang.System.out"/>
+        </constructor-arg>
+        <constructor-arg name="gameBoard" ref="gameBoard"/>
     </bean>
 </beans>
