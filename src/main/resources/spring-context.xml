@@ -32,11 +32,4 @@
             <util:constant static-field="java.lang.System.in"/>
         </constructor-arg>
     </bean>
-    <bean class="com.uprr.app.tng.spring.hmi.HumanInterface">
-        <constructor-arg name="scanner" ref="scanner"/>
-        <constructor-arg name="printer">
-            <util:constant static-field="java.lang.System.out"/>
-        </constructor-arg>
-        <constructor-arg name="gameBoard" ref="gameBoard"/>
-    </bean>
 </beans>
