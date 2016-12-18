@@ -16,7 +16,11 @@ public class PokemonDao {
     }
 
     public int create(@Nonnull final Pokemon pokemon) {
-        return 0;
+        final int id = this.jdbcOperations.queryForObject("SELECT POKEMON_ID_SEQ.nextval FROM DUAL", Integer.class);
+        pokemon.setId(id);
+        this.jdbcOperations.update("INSERT INTO POKEMON (ID, HP, ATTACK) VALUES (?, ?, ?)",
+                                   id, pokemon.getHp(), pokemon.getAttack());
+        return id;
     }
 
     @Nonnull
@@ -33,5 +37,9 @@ public class PokemonDao {
     public void update(@Nonnull final Pokemon pokemon) {
         this.jdbcOperations.update("UPDATE POKEMON SET HP = ?, ATTACK = ? WHERE ID = ?",
                                    pokemon.getHp(), pokemon.getAttack(), pokemon.getId());
+    }
+
+    public void delete(final int id) {
+        this.jdbcOperations.update("DELETE FROM POKEMON WHERE ID = ?", id);
     }
 }

@@ -6,6 +6,7 @@ import com.uprr.app.tng.spring.pojo.Pokemon;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.dao.IncorrectResultSizeDataAccessException;
 import org.springframework.test.annotation.Rollback;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
@@ -50,5 +51,25 @@ public class PokemonDaoIT {
         assertThat(result.getId()).isEqualTo(1);
         assertThat(result.getHp()).isEqualTo(newHp);
         assertThat(result.getAttack()).isEqualTo(newAttack);
+    }
+
+    @Test
+    public void create() throws Exception {
+        final Pokemon expected = new Pokemon(5, 6);
+        final int     id       = this.testable.create(expected);
+        assertThat(expected.getId()).isEqualTo(id);
+
+        final Pokemon actual = this.testable.get(id);
+        assertThat(actual).isEqualTo(expected);
+    }
+
+    @Test(expected = IncorrectResultSizeDataAccessException.class)
+    public void delete() throws Exception {
+        final Pokemon expected = new Pokemon(5, 6);
+        final int     id       = this.testable.create(expected);
+
+        this.testable.delete(id);
+
+        this.testable.get(id);
     }
 }
