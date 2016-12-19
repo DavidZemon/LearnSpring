@@ -39,7 +39,7 @@ public class PokemonDaoIT {
 
     @Autowired private DataSource                 dataSource;
     @Autowired private PlatformTransactionManager transactionManager;
-    @Autowired private PokemonDao testable;
+    @Autowired private PokemonDao                 testable;
 
     private Destination destination;
 
@@ -61,15 +61,13 @@ public class PokemonDaoIT {
 
     @Test
     public void update() throws Exception {
-        final int newHp = 1000;
+        final int newHp     = 1000;
         final int newAttack = 9001;
 
-        final Pokemon start = this.testable.get(1);
+        this.dbSetup(DELETE_ALL_POKEMON, this.buildInsert(1, 2, 3));
 
-        start.setHp(newHp);
-        start.setAttack(newAttack);
-
-        this.testable.update(start);
+        final Pokemon expected = new Pokemon(1, newHp, newAttack);
+        this.testable.update(expected);
 
         final Pokemon result = this.testable.get(1);
 
@@ -80,6 +78,8 @@ public class PokemonDaoIT {
 
     @Test
     public void create() throws Exception {
+        this.dbSetup(DELETE_ALL_POKEMON);
+
         final Pokemon expected = new Pokemon(5, 6);
         final int     id       = this.testable.create(expected);
         assertThat(expected.getId()).isEqualTo(id);
@@ -90,12 +90,11 @@ public class PokemonDaoIT {
 
     @Test(expected = IncorrectResultSizeDataAccessException.class)
     public void delete() throws Exception {
-        final Pokemon expected = new Pokemon(5, 6);
-        final int     id       = this.testable.create(expected);
+        this.dbSetup(DELETE_ALL_POKEMON, this.buildInsert(4, 5, 6));
 
-        this.testable.delete(id);
+        this.testable.delete(4);
 
-        this.testable.get(id);
+        this.testable.get(4);
     }
 
     @Nonnull
