@@ -3,6 +3,7 @@ package com.uprr.app.tng.spring.hmi;
 import com.uprr.app.tng.spring.GameBoard;
 import org.apache.commons.lang3.tuple.ImmutablePair;
 import org.apache.commons.lang3.tuple.Pair;
+import org.springframework.beans.factory.annotation.Autowired;
 
 import javax.annotation.Nonnull;
 import java.io.PrintStream;
@@ -14,16 +15,15 @@ import java.util.Scanner;
 public class HumanInterface {
     private static final int QUIT_NUMBER = -1;
 
-    @Nonnull private final Scanner     scanner;
-    @Nonnull private final PrintStream printer;
-    @Nonnull private final GameBoard   gameBoard;
-
-    public HumanInterface(@Nonnull final Scanner scanner, @Nonnull final PrintStream printer,
-                          @Nonnull final GameBoard gameBoard) {
-        this.scanner = scanner;
-        this.printer = printer;
-        this.gameBoard = gameBoard;
-    }
+    @Autowired
+    @Nonnull
+    private Scanner     scanner;
+    @Autowired
+    @Nonnull
+    private PrintStream printer;
+    @Autowired
+    @Nonnull
+    private GameBoard   gameBoard;
 
     public void run() {
         final int totalTiles   = this.gameBoard.getMapArea();
