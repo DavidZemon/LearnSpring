@@ -14,13 +14,7 @@
             </list>
         </property>
     </bean>
-
-    <bean id="randomNumberGenerator" class="com.uprr.app.tng.spring.random.RandomNumberGenerator"/>
-    <bean id="pokemonDao" class="com.uprr.app.tng.spring.dao.PokemonDao"/>
-    <bean id="pokemonLocationDao" class="com.uprr.app.tng.spring.dao.PokemonLocationDao"/>
-    <bean id="pokemonFactory" class="com.uprr.app.tng.spring.factory.PokemonFactory"/>
-    <bean id="gameBoard" class="com.uprr.app.tng.spring.GameBoard"/>
-
+    <context:component-scan base-package="com.uprr.app.tng.spring"/>
 
     <bean id="scanner" class="java.util.Scanner">
         <constructor-arg>
@@ -30,6 +24,4 @@
 
     <util:constant id="printStream" static-field="java.lang.System.out"/>
 
-    <bean class="com.uprr.app.tng.spring.hmi.HumanInterface"/>
-    <context:annotation-config/>
 </beans>

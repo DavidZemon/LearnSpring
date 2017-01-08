@@ -4,6 +4,7 @@ import com.uprr.app.tng.spring.GameBoard;
 import org.apache.commons.lang3.tuple.ImmutablePair;
 import org.apache.commons.lang3.tuple.Pair;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Component;
 
 import javax.annotation.Nonnull;
 import java.io.PrintStream;
@@ -12,6 +13,7 @@ import java.util.Scanner;
 /**
  * Created by david on 8/8/16.
  */
+@Component
 public class HumanInterface {
     private static final int QUIT_NUMBER = -1;
 

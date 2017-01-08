@@ -3,12 +3,14 @@ package com.uprr.app.tng.spring.factory;
 import com.uprr.app.tng.spring.pojo.Pokemon;
 import com.uprr.app.tng.spring.random.RandomNumberGenerator;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Component;
 
 import javax.annotation.Nonnull;
 
 /**
  * Created by david on 8/8/16.
  */
+@Component
 public class PokemonFactory {
     @Autowired
     @Nonnull

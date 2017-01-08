@@ -1,6 +1,7 @@
 package com.uprr.app.tng.spring.dao;
 
 import com.uprr.app.tng.spring.pojo.Pokemon;
+import org.springframework.stereotype.Component;
 
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
@@ -11,6 +12,7 @@ import java.util.concurrent.atomic.AtomicInteger;
 /**
  * Created by david on 1/7/17.
  */
+@Component
 public class PokemonDao {
     private static final AtomicInteger idCounter = new AtomicInteger(0);
 

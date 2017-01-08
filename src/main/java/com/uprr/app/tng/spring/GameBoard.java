@@ -8,6 +8,7 @@ import com.uprr.app.tng.spring.pojo.PokemonLocation;
 import com.uprr.app.tng.spring.random.RandomNumberGenerator;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.stereotype.Component;
 
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
@@ -15,6 +16,7 @@ import javax.annotation.Nullable;
 /**
  * Created by david on 8/8/16.
  */
+@Component
 public class GameBoard {
     @Autowired
     @Nonnull
