@@ -26,8 +26,8 @@ public class DaoConfig {
     }
 
     @Bean
-    public PokemonLocationDao pokemonLocationDao() {
-        return new PokemonLocationDao();
+    public PokemonLocationDao pokemonLocationDao () {
+        return new PokemonLocationDao(this.jdbcOperations());
     }
 
     @Bean

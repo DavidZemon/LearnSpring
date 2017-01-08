@@ -1,26 +1,42 @@
 package com.uprr.app.tng.spring.dao;
 
+import com.google.common.collect.ImmutableMap;
 import com.uprr.app.tng.spring.pojo.PokemonLocation;
+import org.springframework.jdbc.core.namedparam.NamedParameterJdbcOperations;
 
 import javax.annotation.Nonnull;
-import java.util.ArrayList;
-import java.util.Collection;
 
 /**
  * Created by david on 1/7/17.
  */
 public class PokemonLocationDao {
-    @Nonnull private final Collection<PokemonLocation> locations = new ArrayList<>();
+    @Nonnull private final NamedParameterJdbcOperations jdbcOperations;
 
-    public void create(@Nonnull final PokemonLocation pokemonLocation) {
-        this.locations.add(pokemonLocation);
+    public PokemonLocationDao(@Nonnull final NamedParameterJdbcOperations jdbcOperations) {
+        this.jdbcOperations = jdbcOperations;
     }
 
-    public Integer getId(final int x, final int y) {
-        return this.locations.stream()
-                             .filter(location -> location.getX() == x && location.getY() == y)
-                             .map(PokemonLocation::getPokemonId)
-                             .findFirst()
-                             .orElse(null);
+    public void create(@Nonnull final PokemonLocation pokemonLocation) {
+        this.jdbcOperations.update("INSERT INTO POKEMON_LOCATION (\n" +
+                                       "    X, \n" +
+                                       "    Y, \n" +
+                                       "    POKEMON_ID\n" +
+                                       ") VALUES (\n" +
+                                       "    :x,\n" +
+                                       "    :y,\n" +
+                                       "    :pokemonId\n" +
+                                       ")", ImmutableMap.of(
+            "x", pokemonLocation.getX(),
+            "y", pokemonLocation.getY(),
+            "pokemonId", pokemonLocation.getPokemonId()
+        ));
+    }
+
+    public int getId(final int x, final int y) {
+        return this.jdbcOperations.queryForObject("SELECT POKEMON_ID FROM POKEMON_LOCATION\n" +
+                                                      "WHERE X = :x and Y = :y", ImmutableMap.of(
+            "x", x,
+            "y", y
+        ), Integer.class);
     }
 }

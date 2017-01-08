@@ -26,10 +26,6 @@ public class HumanInterface {
     }
 
     public void run() {
-        final int totalTiles   = this.gameBoard.getMapArea();
-        final int pokemonCount = this.getInt("How many pokemon should be generated (" + totalTiles + " total tiles)");
-        this.gameBoard.fillBoard(pokemonCount);
-
         Pair<Integer, Integer> coordinate;
         do {
             coordinate = this.getIntPair();
@@ -42,12 +38,6 @@ public class HumanInterface {
 
     private boolean shouldContinue(@Nonnull final Pair<Integer, Integer> coordinate) {
         return coordinate.getLeft() != QUIT_NUMBER && coordinate.getRight() != QUIT_NUMBER;
-    }
-
-    private int getInt(@Nonnull final String prompt) {
-        this.printer.println(prompt);
-        this.printer.print(">>> ");
-        return this.scanner.nextInt();
     }
 
     private Pair<Integer, Integer> getIntPair() {
