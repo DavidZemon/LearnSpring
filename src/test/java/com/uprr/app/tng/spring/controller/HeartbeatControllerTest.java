@@ -11,6 +11,7 @@ import org.springframework.test.web.servlet.setup.MockMvcBuilders;
 
 import static org.hamcrest.CoreMatchers.is;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
@@ -30,9 +31,32 @@ public class HeartbeatControllerTest {
 
     @Test
     public void echo() throws Exception {
-        this.mockMvc.perform(get("/")
+        this.mockMvc.perform(get("/heartbeat/get")
                                  .accept(MediaType.APPLICATION_JSON))
                     .andExpect(status().is(HttpStatus.OK.value()))
                     .andExpect(jsonPath("$.message", is(HeartbeatController.DEFAULT_MESSAGE)));
+    }
+
+    @Test
+    public void reverse() throws Exception {
+        this.mockMvc.perform(post("/heartbeat/reverse")
+                                 .param("message", "foobar")
+                                 .accept(MediaType.APPLICATION_JSON))
+                    .andExpect(status().is(HttpStatus.OK.value()))
+                    .andExpect(jsonPath("$.message", is("raboof")));
+    }
+
+    @Test
+    public void upper() throws Exception {
+        //language=JSON
+        final String message = "{\n" +
+            "    \"message\": \"fooBar123\"\n" +
+            "}";
+        this.mockMvc.perform(post("/heartbeat/upper")
+                                 .content(message)
+                                 .contentType(MediaType.APPLICATION_JSON)
+                                 .accept(MediaType.APPLICATION_JSON))
+                    .andExpect(status().is(HttpStatus.OK.value()))
+                    .andExpect(jsonPath("$.message", is("FOOBAR123")));
     }
 }
