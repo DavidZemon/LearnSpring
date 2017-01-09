@@ -2,6 +2,7 @@ package com.uprr.app.tng.spring.factory;
 
 import com.uprr.app.tng.spring.pojo.Pokemon;
 import com.uprr.app.tng.spring.random.RandomNumberGenerator;
+import org.springframework.beans.factory.annotation.Required;
 
 import javax.annotation.Nonnull;
 
@@ -9,9 +10,9 @@ import javax.annotation.Nonnull;
  * Created by david on 8/8/16.
  */
 public class PokemonFactory {
-    @Nonnull private final RandomNumberGenerator randomNumberGenerator;
+    @Nonnull private RandomNumberGenerator randomNumberGenerator;
 
-    public PokemonFactory(@Nonnull final RandomNumberGenerator randomNumberGenerator) {
+    public void setRandomNumberGenerator(@Nonnull final RandomNumberGenerator randomNumberGenerator) {
         this.randomNumberGenerator = randomNumberGenerator;
     }
 

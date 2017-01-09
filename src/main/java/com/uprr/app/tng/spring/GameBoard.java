@@ -14,21 +14,29 @@ import javax.annotation.Nullable;
  * Created by david on 8/8/16.
  */
 public class GameBoard {
-    @Nonnull private final PokemonLocationDao    pokemonLocationDao;
-    @Nonnull private final PokemonDao            pokemonDao;
-    @Nonnull private final PokemonFactory        pokemonFactory;
-    @Nonnull private final RandomNumberGenerator randomNumberGenerator;
-    private final          int                   size;
+    @Nonnull private PokemonLocationDao    pokemonLocationDao;
+    @Nonnull private PokemonDao            pokemonDao;
+    @Nonnull private PokemonFactory        pokemonFactory;
+    @Nonnull private RandomNumberGenerator randomNumberGenerator;
+    private          int                   size;
 
-    public GameBoard(@Nonnull final PokemonLocationDao pokemonLocationDao,
-                     @Nonnull final PokemonDao pokemonDao,
-                     @Nonnull final PokemonFactory pokemonFactory,
-                     @Nonnull final RandomNumberGenerator randomNumberGenerator,
-                     final int size) {
+    public void setPokemonLocationDao(@Nonnull final PokemonLocationDao pokemonLocationDao) {
         this.pokemonLocationDao = pokemonLocationDao;
+    }
+
+    public void setPokemonDao(@Nonnull final PokemonDao pokemonDao) {
         this.pokemonDao = pokemonDao;
+    }
+
+    public void setPokemonFactory(@Nonnull final PokemonFactory pokemonFactory) {
         this.pokemonFactory = pokemonFactory;
+    }
+
+    public void setRandomNumberGenerator(@Nonnull final RandomNumberGenerator randomNumberGenerator) {
         this.randomNumberGenerator = randomNumberGenerator;
+    }
+
+    public void setSize(final int size) {
         this.size = size;
     }
 

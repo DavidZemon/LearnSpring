@@ -18,25 +18,27 @@
     <bean id="pokemonDao" class="com.uprr.app.tng.spring.dao.PokemonDao"/>
     <bean id="pokemonLocationDao" class="com.uprr.app.tng.spring.dao.PokemonLocationDao"/>
     <bean id="pokemonFactory" class="com.uprr.app.tng.spring.factory.PokemonFactory">
-        <constructor-arg name="randomNumberGenerator" ref="randomNumberGenerator"/>
+        <property name="randomNumberGenerator" ref="randomNumberGenerator"/>
     </bean>
     <bean id="gameBoard" class="com.uprr.app.tng.spring.GameBoard">
-        <constructor-arg name="pokemonDao" ref="pokemonDao"/>
-        <constructor-arg name="pokemonLocationDao" ref="pokemonLocationDao"/>
-        <constructor-arg name="pokemonFactory" ref="pokemonFactory"/>
-        <constructor-arg name="randomNumberGenerator" ref="randomNumberGenerator"/>
-        <constructor-arg name="size" value="${default-map-size}"/>
+        <property name="pokemonDao" ref="pokemonDao"/>
+        <property name="pokemonLocationDao" ref="pokemonLocationDao"/>
+        <property name="pokemonFactory" ref="pokemonFactory"/>
+        <property name="randomNumberGenerator" ref="randomNumberGenerator"/>
+        <property name="size" value="${default-map-size}"/>
     </bean>
+
     <bean id="scanner" class="java.util.Scanner">
         <constructor-arg>
             <util:constant static-field="java.lang.System.in"/>
         </constructor-arg>
     </bean>
+
     <bean class="com.uprr.app.tng.spring.hmi.HumanInterface">
-        <constructor-arg name="scanner" ref="scanner"/>
-        <constructor-arg name="printer">
+        <property name="scanner" ref="scanner"/>
+        <property name="printer">
             <util:constant static-field="java.lang.System.out"/>
-        </constructor-arg>
-        <constructor-arg name="gameBoard" ref="gameBoard"/>
+        </property>
+        <property name="gameBoard" ref="gameBoard"/>
     </bean>
 </beans>

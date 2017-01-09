@@ -14,14 +14,19 @@ import java.util.Scanner;
 public class HumanInterface {
     private static final int QUIT_NUMBER = -1;
 
-    @Nonnull private final Scanner     scanner;
-    @Nonnull private final PrintStream printer;
-    @Nonnull private final GameBoard   gameBoard;
+    @Nonnull private Scanner     scanner;
+    @Nonnull private PrintStream printer;
+    @Nonnull private GameBoard   gameBoard;
 
-    public HumanInterface(@Nonnull final Scanner scanner, @Nonnull final PrintStream printer,
-                          @Nonnull final GameBoard gameBoard) {
+    public void setScanner(@Nonnull final Scanner scanner) {
         this.scanner = scanner;
+    }
+
+    public void setPrinter(@Nonnull final PrintStream printer) {
         this.printer = printer;
+    }
+
+    public void setGameBoard(@Nonnull final GameBoard gameBoard) {
         this.gameBoard = gameBoard;
     }
 
