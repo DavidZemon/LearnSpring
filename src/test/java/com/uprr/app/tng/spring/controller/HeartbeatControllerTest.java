@@ -1,5 +1,6 @@
 package com.uprr.app.tng.spring.controller;
 
+import com.uprr.app.tng.spring.controller.advice.GlobalExceptionHandler;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -26,6 +27,7 @@ public class HeartbeatControllerTest {
     public void setUp() throws Exception {
         this.mockMvc = MockMvcBuilders
             .standaloneSetup(new HeartbeatController())
+            .setControllerAdvice(new GlobalExceptionHandler())
             .build();
     }
 
@@ -58,5 +60,14 @@ public class HeartbeatControllerTest {
                                  .accept(MediaType.APPLICATION_JSON))
                     .andExpect(status().is(HttpStatus.OK.value()))
                     .andExpect(jsonPath("$.message", is("FOOBAR123")));
+    }
+
+    @Test
+    public void test_myCustomExceptionThrown_appropriateResponseReceived() throws Exception {
+        this.mockMvc.perform(get("/heartbeat/error")
+                                 .accept(MediaType.APPLICATION_JSON))
+                    .andExpect(status().is(HttpStatus.INTERNAL_SERVER_ERROR.value()))
+                    .andExpect(jsonPath("$.title", is("Custom error")))
+                    .andExpect(jsonPath("$.message", is(HeartbeatController.ERROR_MESSAGE)));
     }
 }

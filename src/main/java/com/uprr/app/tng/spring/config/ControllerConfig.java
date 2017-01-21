@@ -2,6 +2,7 @@ package com.uprr.app.tng.spring.config;
 
 import com.uprr.app.tng.spring.controller.HeartbeatController;
 import com.uprr.app.tng.spring.controller.PokemonController;
+import com.uprr.app.tng.spring.controller.advice.GlobalExceptionHandler;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -12,6 +13,11 @@ import org.springframework.context.annotation.Configuration;
 @Configuration
 public class ControllerConfig {
     @Autowired private DaoConfig daoConfig;
+
+    @Bean
+    public GlobalExceptionHandler globalExceptionHandler() {
+        return new GlobalExceptionHandler();
+    }
 
     @Bean
     public HeartbeatController heartBeatController() {
