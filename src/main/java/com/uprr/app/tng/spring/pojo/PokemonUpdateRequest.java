@@ -5,27 +5,12 @@ import org.apache.commons.lang3.builder.HashCodeBuilder;
 import org.apache.commons.lang3.builder.ToStringBuilder;
 
 /**
- * Created by david on 8/8/16.
+ * Created by david on 1/22/17.
  */
-@SuppressWarnings("unused")
-public class Pokemon {
+public class PokemonUpdateRequest {
     private Integer id;
     private Integer hp;
     private Integer attack;
-
-    public Pokemon() {
-    }
-
-    public Pokemon(final int hp, final int attack) {
-        this.hp = hp;
-        this.attack = attack;
-    }
-
-    public Pokemon(final int id, final int hp, final int attack) {
-        this.id = id;
-        this.hp = hp;
-        this.attack = attack;
-    }
 
     public Integer getId() {
         return this.id;
@@ -61,12 +46,12 @@ public class Pokemon {
             return false;
         }
 
-        final Pokemon pokemon = (Pokemon) o;
+        final PokemonUpdateRequest that = (PokemonUpdateRequest) o;
 
         return new EqualsBuilder()
-            .append(this.id, pokemon.id)
-            .append(this.hp, pokemon.hp)
-            .append(this.attack, pokemon.attack)
+            .append(this.id, that.id)
+            .append(this.hp, that.hp)
+            .append(this.attack, that.attack)
             .isEquals();
     }
 

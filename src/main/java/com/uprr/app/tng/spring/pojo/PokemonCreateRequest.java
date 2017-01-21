@@ -5,35 +5,11 @@ import org.apache.commons.lang3.builder.HashCodeBuilder;
 import org.apache.commons.lang3.builder.ToStringBuilder;
 
 /**
- * Created by david on 8/8/16.
+ * Created by david on 1/22/17.
  */
-@SuppressWarnings("unused")
-public class Pokemon {
-    private Integer id;
+public class PokemonCreateRequest {
     private Integer hp;
     private Integer attack;
-
-    public Pokemon() {
-    }
-
-    public Pokemon(final int hp, final int attack) {
-        this.hp = hp;
-        this.attack = attack;
-    }
-
-    public Pokemon(final int id, final int hp, final int attack) {
-        this.id = id;
-        this.hp = hp;
-        this.attack = attack;
-    }
-
-    public Integer getId() {
-        return this.id;
-    }
-
-    public void setId(final Integer id) {
-        this.id = id;
-    }
 
     public Integer getHp() {
         return this.hp;
@@ -61,19 +37,17 @@ public class Pokemon {
             return false;
         }
 
-        final Pokemon pokemon = (Pokemon) o;
+        final PokemonCreateRequest that = (PokemonCreateRequest) o;
 
         return new EqualsBuilder()
-            .append(this.id, pokemon.id)
-            .append(this.hp, pokemon.hp)
-            .append(this.attack, pokemon.attack)
+            .append(this.hp, that.hp)
+            .append(this.attack, that.attack)
             .isEquals();
     }
 
     @Override
     public int hashCode() {
         return new HashCodeBuilder(17, 37)
-            .append(this.id)
             .append(this.hp)
             .append(this.attack)
             .toHashCode();
@@ -82,7 +56,6 @@ public class Pokemon {
     @Override
     public String toString() {
         return new ToStringBuilder(this)
-            .append("id", this.id)
             .append("hp", this.hp)
             .append("attack", this.attack)
             .toString();
