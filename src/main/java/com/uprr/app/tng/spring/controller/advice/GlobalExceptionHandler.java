@@ -1,5 +1,6 @@
 package com.uprr.app.tng.spring.controller.advice;
 
+import com.uprr.app.tng.spring.exception.BadRequestException;
 import com.uprr.app.tng.spring.exception.MyCustomException;
 import com.uprr.app.tng.spring.pojo.ClientError;
 import org.springframework.http.HttpStatus;
@@ -20,5 +21,12 @@ public class GlobalExceptionHandler {
     @ResponseStatus(HttpStatus.INTERNAL_SERVER_ERROR)
     public ClientError handleMyCustomException(@Nonnull final MyCustomException e) {
         return new ClientError("Custom error", e.getMessage());
+    }
+
+    @ExceptionHandler(BadRequestException.class)
+    @ResponseBody
+    @ResponseStatus(HttpStatus.BAD_REQUEST)
+    public ClientError handleBadRequestException(@Nonnull final BadRequestException e) {
+        return new ClientError("Bad request", e.getMessage());
     }
 }
