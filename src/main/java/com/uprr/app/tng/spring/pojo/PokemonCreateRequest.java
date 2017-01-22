@@ -4,11 +4,20 @@ import org.apache.commons.lang3.builder.EqualsBuilder;
 import org.apache.commons.lang3.builder.HashCodeBuilder;
 import org.apache.commons.lang3.builder.ToStringBuilder;
 
+import javax.validation.constraints.Max;
+import javax.validation.constraints.Min;
+import javax.validation.constraints.NotNull;
+
 /**
  * Created by david on 1/22/17.
  */
 public class PokemonCreateRequest {
+    @NotNull(message = "Pokemon HP cannot be null")
+    @Min(value = 1, message = "Pokemon HP must be between 1 and 100 (inclusive)")
+    @Max(value = 100, message = "Pokemon HP must be between 1 and 100 (inclusive)")
     private Integer hp;
+    @NotNull(message = "Pokemon attack cannot be null")
+    @Min(value = 1, message = "Pokemon attack must be greater than 0")
     private Integer attack;
 
     public Integer getHp() {
