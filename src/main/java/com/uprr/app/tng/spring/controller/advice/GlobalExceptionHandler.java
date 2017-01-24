@@ -3,6 +3,7 @@ package com.uprr.app.tng.spring.controller.advice;
 import com.uprr.app.tng.spring.exception.MyCustomException;
 import com.uprr.app.tng.spring.pojo.ClientError;
 import org.springframework.context.support.DefaultMessageSourceResolvable;
+import org.springframework.dao.EmptyResultDataAccessException;
 import org.springframework.http.HttpStatus;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.MethodArgumentNotValidException;
@@ -39,5 +40,12 @@ public class GlobalExceptionHandler {
                                            .orElse("");
             return new ClientError("Bad request", String.format("Multiple errors: [%s]", combinedErrors));
         }
+    }
+
+    @ExceptionHandler(EmptyResultDataAccessException.class)
+    @ResponseBody
+    @ResponseStatus(HttpStatus.BAD_REQUEST)
+    public ClientError handleEmptyResultDataAccessException(@Nonnull final EmptyResultDataAccessException ignored) {
+        return new ClientError("Bad query", "No data could be found at those coordinates");
     }
 }

@@ -2,6 +2,7 @@ package com.uprr.app.tng.spring.config;
 
 import com.uprr.app.tng.spring.controller.HeartbeatController;
 import com.uprr.app.tng.spring.controller.PokemonController;
+import com.uprr.app.tng.spring.controller.PokemonLocationController;
 import com.uprr.app.tng.spring.controller.advice.GlobalExceptionHandler;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
@@ -27,5 +28,10 @@ public class ControllerConfig {
     @Bean
     public PokemonController pokemonController() {
         return new PokemonController(this.daoConfig.pokemonDao());
+    }
+
+    @Bean
+    public PokemonLocationController pokemonLocationController() {
+        return new PokemonLocationController(this.daoConfig.pokemonLocationDao());
     }
 }
