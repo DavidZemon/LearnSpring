@@ -13,7 +13,7 @@ import java.util.Scanner;
  * Created by david on 11/19/16.
  */
 @Configuration
-@Import({DaoConfig.class, PropertyConfig.class, MvcConfig.class, ControllerConfig.class})
+@Import({DaoConfig.class, PropertyConfig.class, MvcConfig.class, ControllerConfig.class, SwaggerConfig.class})
 public class MainConfig {
     @Autowired private DaoConfig daoConfig;
 

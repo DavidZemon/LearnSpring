@@ -4,6 +4,7 @@ import com.uprr.app.tng.spring.dao.PokemonLocationDao;
 import com.uprr.app.tng.spring.pojo.PokemonId;
 import com.uprr.app.tng.spring.pojo.PokemonLocation;
 import com.uprr.app.tng.spring.pojo.PokemonLocationCreateRequest;
+import io.swagger.annotations.ApiOperation;
 import org.springframework.http.MediaType;
 import org.springframework.web.bind.annotation.*;
 
@@ -22,11 +23,13 @@ public class PokemonLocationController {
         this.pokemonLocationDao = pokemonLocationDao;
     }
 
+    @ApiOperation("Determine which Pokemon (if any) exists at the requested location")
     @RequestMapping(path = "get", method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_VALUE)
     public PokemonId get (@RequestParam final int x, @RequestParam final int y) {
         return new PokemonId(this.pokemonLocationDao.getId(x, y));
     }
 
+    @ApiOperation("Associate an X/Y coordinate with a specific Pokemon")
     @RequestMapping(path = "create", method = RequestMethod.POST, produces = MediaType.APPLICATION_JSON_VALUE)
     public void create(@RequestBody @Valid final PokemonLocationCreateRequest request) {
         this.pokemonLocationDao.create(new PokemonLocation(request.getX(), request.getY(), request.getPokemonId()));

@@ -4,6 +4,7 @@ import com.uprr.app.tng.spring.dao.PokemonDao;
 import com.uprr.app.tng.spring.pojo.Pokemon;
 import com.uprr.app.tng.spring.pojo.PokemonCreateRequest;
 import com.uprr.app.tng.spring.pojo.PokemonUpdateRequest;
+import io.swagger.annotations.ApiOperation;
 import org.springframework.http.MediaType;
 import org.springframework.web.bind.annotation.*;
 
@@ -22,21 +23,25 @@ public class PokemonController {
         this.pokemonDao = pokemonDao;
     }
 
+    @ApiOperation("Retrieve a Pokemon with the given ID")
     @RequestMapping(path = "get/{id}", method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_VALUE)
     public Pokemon get(@PathVariable final int id) {
         return this.pokemonDao.get(id);
     }
 
+    @ApiOperation("Update an existing Pokemon")
     @RequestMapping(path = "update", method = RequestMethod.POST, produces = MediaType.APPLICATION_JSON_VALUE)
     public void update(@RequestBody @Valid final PokemonUpdateRequest request) {
         this.pokemonDao.update(new Pokemon(request.getId(), request.getHp(), request.getAttack()));
     }
 
+    @ApiOperation("Delete an existing Pokemon with the given ID")
     @RequestMapping(path = "delete/{id}", method = RequestMethod.POST, produces = MediaType.APPLICATION_JSON_VALUE)
     public void delete(@PathVariable final int id) {
         this.pokemonDao.delete(id);
     }
 
+    @ApiOperation("Create a new Pokemon")
     @RequestMapping(path = "create", method = RequestMethod.POST, produces = MediaType.APPLICATION_JSON_VALUE)
     public Pokemon create(@RequestBody @Valid final PokemonCreateRequest request) {
         final Pokemon pokemon = new Pokemon(request.getHp(), request.getAttack());
