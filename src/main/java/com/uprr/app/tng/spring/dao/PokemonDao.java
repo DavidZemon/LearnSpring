@@ -1,30 +1,37 @@
 package com.uprr.app.tng.spring.dao;
 
 import com.uprr.app.tng.spring.pojo.Pokemon;
+import org.springframework.jdbc.core.JdbcOperations;
 
 import javax.annotation.Nonnull;
-import javax.annotation.Nullable;
-import java.util.HashMap;
-import java.util.Map;
-import java.util.concurrent.atomic.AtomicInteger;
 
 /**
- * Created by david on 1/7/17.
+ * Created by david on 12/5/16.
  */
 public class PokemonDao {
-    private static final AtomicInteger idCounter = new AtomicInteger(0);
+    @Nonnull private final JdbcOperations jdbcOperations;
 
-    @Nonnull private final Map<Integer, Pokemon> pokemon = new HashMap<>();
-
-    public int create(@Nonnull final Pokemon pokemon) {
-        final int id = idCounter.getAndIncrement();
-        pokemon.setId(id);
-        this.pokemon.put(id, pokemon);
-        return id;
+    public PokemonDao(@Nonnull final JdbcOperations jdbcOperations) {
+        this.jdbcOperations = jdbcOperations;
     }
 
-    @Nullable
-    public Pokemon get(final int id) {
-        return this.pokemon.get(id);
+    public int create(@Nonnull final Pokemon pokemon) {
+        return 0;
+    }
+
+    @Nonnull
+    public Pokemon get(final int requestedId) {
+        return this.jdbcOperations.queryForObject("SELECT ID, HP, ATTACK FROM POKEMON WHERE ID = ?",
+                                                  new Object[]{requestedId}, (rs, rowNum) -> {
+                final int id = rs.getInt("ID");
+                final int hp  = rs.getInt("HP");
+                final int attack  = rs.getInt("ATTACK");
+                return new Pokemon(id, hp, attack);
+            });
+    }
+
+    public void update(@Nonnull final Pokemon pokemon) {
+        this.jdbcOperations.update("UPDATE POKEMON SET HP = ?, ATTACK = ? WHERE ID = ?",
+                                   pokemon.getHp(), pokemon.getAttack(), pokemon.getId());
     }
 }

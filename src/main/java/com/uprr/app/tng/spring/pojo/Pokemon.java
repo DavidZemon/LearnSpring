@@ -18,6 +18,12 @@ public class Pokemon {
         this.attack = attack;
     }
 
+    public Pokemon(final int id, final int hp, final int attack) {
+        this.id = id;
+        this.hp = hp;
+        this.attack = attack;
+    }
+
     public Integer getId() {
         return this.id;
     }

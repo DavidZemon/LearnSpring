@@ -15,7 +15,22 @@ public class PropertyConfig {
     @Autowired private Environment environment;
 
     @Bean
-    public int mapSize () {
+    public int mapSize() {
         return this.environment.getRequiredProperty("default-map-size", Integer.class);
+    }
+
+    @Bean
+    public String databaseUrl() {
+        return this.environment.getRequiredProperty("database.jdbc.url");
+    }
+
+    @Bean
+    public String databaseUser() {
+        return this.environment.getRequiredProperty("database.jdbc.user");
+    }
+
+    @Bean
+    public String databasePassword() {
+        return this.environment.getRequiredProperty("database.jdbc.password");
     }
 }
