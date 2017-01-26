@@ -1,15 +1,13 @@
 package com.uprr.app.tng.spring.config;
 
 import com.uprr.app.tng.spring.GameBoard;
-import com.uprr.app.tng.spring.dao.PokemonDao;
-import com.uprr.app.tng.spring.dao.PokemonLocationDao;
 import com.uprr.app.tng.spring.factory.PokemonFactory;
 import com.uprr.app.tng.spring.hmi.HumanInterface;
 import com.uprr.app.tng.spring.random.RandomNumberGenerator;
-import org.springframework.beans.factory.annotation.Value;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
-import org.springframework.context.annotation.PropertySource;
+import org.springframework.context.annotation.Import;
 
 import java.util.Scanner;
 
@@ -17,12 +15,14 @@ import java.util.Scanner;
  * Created by david on 11/19/16.
  */
 @Configuration
-@PropertySource("classpath:common.properties")
+@Import({DaoConfig.class, PropertyConfig.class})
 public class MainConfig {
+    @Autowired private PropertyConfig propertyConfig;
+    @Autowired private DaoConfig      daoConfig;
+
     @Bean
-    public HumanInterface mapInteraction(final Scanner scanner,
-                                         final GameBoard gameBoard) {
-        return new HumanInterface(scanner, System.out, gameBoard);
+    public HumanInterface mapInteraction() {
+        return new HumanInterface(this.scanner(), System.out, this.gameBoard());
     }
 
     @Bean
@@ -31,27 +31,14 @@ public class MainConfig {
     }
 
     @Bean
-    public PokemonDao pokemonDao () {
-        return new PokemonDao();
-    }
-
-    @Bean
-    public PokemonLocationDao pokemonLocationDao () {
-        return new PokemonLocationDao();
-    }
-
-    @Bean
     public PokemonFactory pokemonFactory() {
         return new PokemonFactory(this.randomNumberGenerator());
     }
 
-
     @Bean
-    public GameBoard gameBoard(final PokemonFactory pokemonFactory,
-                               final RandomNumberGenerator randomNumberGenerator,
-                               @Value("${default-map-size}") final int mapSize) {
-        return new GameBoard(this.pokemonLocationDao(), this.pokemonDao(), pokemonFactory, randomNumberGenerator,
-                             mapSize);
+    public GameBoard gameBoard() {
+        return new GameBoard(this.daoConfig.pokemonLocationDao(), this.daoConfig.pokemonDao(), this.pokemonFactory(),
+                             this.randomNumberGenerator(), this.propertyConfig.mapSize());
     }
 
     @Bean
