@@ -1,8 +1,14 @@
 package com.uprr.app.tng.spring.dao;
 
+import com.ninja_squad.dbsetup.DbSetup;
+import com.ninja_squad.dbsetup.Operations;
+import com.ninja_squad.dbsetup.destination.Destination;
+import com.ninja_squad.dbsetup.operation.Insert;
+import com.ninja_squad.dbsetup.operation.Operation;
 import com.uprr.app.tng.spring.config.DaoConfig;
 import com.uprr.app.tng.spring.config.PropertyConfig;
 import com.uprr.app.tng.spring.pojo.Pokemon;
+import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -10,8 +16,14 @@ import org.springframework.dao.IncorrectResultSizeDataAccessException;
 import org.springframework.test.annotation.Rollback;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
+import org.springframework.transaction.PlatformTransactionManager;
 import org.springframework.transaction.annotation.Transactional;
 
+import javax.annotation.Nonnull;
+import javax.sql.DataSource;
+import java.util.Arrays;
+
+import static com.ninja_squad.dbsetup.Operations.insertInto;
 import static org.assertj.core.api.Assertions.assertThat;
 
 /**
@@ -23,15 +35,28 @@ import static org.assertj.core.api.Assertions.assertThat;
 @Transactional
 @Rollback
 public class PokemonDaoIT {
+    private static final Operation DELETE_ALL_POKEMON = Operations.deleteAllFrom("POKEMON_LOCATION", "POKEMON");
+
+    @Autowired private DataSource                 dataSource;
+    @Autowired private PlatformTransactionManager transactionManager;
     @Autowired private PokemonDao testable;
+
+    private Destination destination;
+
+    @Before
+    public void setUp() throws Exception {
+        this.destination = new TransactionAwareDestination(this.dataSource, this.transactionManager);
+    }
 
     @Test
     public void get() throws Exception {
+        this.dbSetup(DELETE_ALL_POKEMON, this.buildInsert(1, 2, 3));
+
         final Pokemon actual = this.testable.get(1);
 
         assertThat(actual.getId()).isEqualTo(1);
-        assertThat(actual.getHp()).isEqualTo(50);
-        assertThat(actual.getAttack()).isEqualTo(10);
+        assertThat(actual.getHp()).isEqualTo(2);
+        assertThat(actual.getAttack()).isEqualTo(3);
     }
 
     @Test
@@ -71,5 +96,21 @@ public class PokemonDaoIT {
         this.testable.delete(id);
 
         this.testable.get(id);
+    }
+
+    @Nonnull
+    private Insert buildInsert(final int id, final int hp, final int attack) {
+        return insertInto("POKEMON")
+            .row()
+            .column("ID", id)
+            .column("HP", hp)
+            .column("ATTACK", attack)
+            .end()
+            .build();
+    }
+
+    private void dbSetup(@Nonnull final Operation... operations) {
+        final DbSetup dbSetup = new DbSetup(this.destination, Operations.sequenceOf(Arrays.asList(operations)));
+        dbSetup.launch();
     }
 }
