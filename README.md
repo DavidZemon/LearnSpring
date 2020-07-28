@@ -4,4 +4,4 @@ Learn Spring
 Introduction
 ------------
 
-This gon learn you some Spring. Enjoy.
+You will learn spring.
